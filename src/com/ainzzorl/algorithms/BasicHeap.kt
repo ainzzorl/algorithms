@@ -32,7 +32,7 @@ class BasicHeap<K: Comparable<K>, V> : Heap<BasicHeapNode<K, V>, K, V> {
     }
 
     private fun heapifyUp(index: Int) {
-        if (index == 0  || nodes[index].getKey() > nodes[index/2].getKey()) {
+        if (index == 0  || nodes[index].key > nodes[index/2].key) {
             return
         }
         swap(index, index / 2)
@@ -41,10 +41,10 @@ class BasicHeap<K: Comparable<K>, V> : Heap<BasicHeapNode<K, V>, K, V> {
 
     private fun heapifyDown(index: Int) {
         var min = index
-        if (index * 2 + 1 < nodes.size && nodes[index * 2 + 1].getKey() < nodes[min].getKey()) {
+        if (index * 2 + 1 < nodes.size && nodes[index * 2 + 1].key < nodes[min].key) {
             min = index * 2 + 1
         }
-        if (index * 2 + 2 < nodes.size && nodes[index * 2 + 2].getKey() < nodes[min].getKey()) {
+        if (index * 2 + 2 < nodes.size && nodes[index * 2 + 2].key < nodes[min].key) {
             min = index * 2 + 2
         }
         if (min != index) {
