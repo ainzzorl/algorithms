@@ -1,6 +1,6 @@
 package com.ainzzorl.algorithms
 
 interface Node<K : Comparable<K>, V> {
-    val key: K
+    var key: K
     val value: V
 }

@@ -5,7 +5,7 @@ interface Heap<N : Node<K, V>, K: Comparable<K>, V> {
 
     fun extractMin(): N?
 
-    fun insert(key: K, value: V)
+    fun insert(key: K, value: V): N
 
-    fun decreaseKey(node: Node<K, V>, k: K)
+    fun decreaseKey(node: Node<K, V>, key: K)
 }

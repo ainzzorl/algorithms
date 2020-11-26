@@ -21,14 +21,20 @@ class BasicHeap<K: Comparable<K>, V> : Heap<BasicHeapNode<K, V>, K, V> {
         return result
     }
 
-    override fun insert(k: K, v: V) {
+    override fun insert(key: K, value: V) : BasicHeapNode<K, V> {
         val nextIndex = nodes.size
-        val node = BasicHeapNode(k, v, nextIndex)
+        val node = BasicHeapNode(key, value, nextIndex)
         nodes.add(node)
         heapifyUp(nextIndex)
+        return node
     }
 
     override fun decreaseKey(node: Node<K, V>, key: K) {
+        check(key < node.key) { "New value is greater than the old" }
+        check(node is BasicHeapNode) { "Expected an instance of BasicHeapNode" }
+
+        node.key = key
+        heapifyUp(node.index)
     }
 
     private fun heapifyUp(index: Int) {

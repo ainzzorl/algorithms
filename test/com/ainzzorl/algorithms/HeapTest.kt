@@ -8,7 +8,7 @@ import kotlin.test.assertNull
 class HeapTest {
     @Test
     fun testBasic() {
-        val heap =  BasicHeap<Int, String>()
+        val heap = BasicHeap<Int, String>()
         var node: Node<Int, String>?
 
         assertNull(heap.getMin())
@@ -31,6 +31,18 @@ class HeapTest {
         assertNotNull(node)
         assertEquals(1, node.key)
         assertEquals("a", node.value)
+
+        val e = heap.insert(6, "e")
+        node = heap.getMin()
+        assertNotNull(node)
+        assertEquals(1, node.key)
+        assertEquals("a", node.value)
+
+        heap.decreaseKey(e, -1)
+        node = heap.extractMin()
+        assertNotNull(node)
+        assertEquals(-1, node.key)
+        assertEquals("e", node.value)
 
         heap.insert(2, "b")
         node = heap.getMin()
