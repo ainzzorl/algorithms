@@ -1,9 +1,9 @@
 package com.ainzzorl.algorithms
 
-class BasicHeap<K: Comparable<K>, V> : Heap<BasicHeapNode<K, V>, K, V> {
+class BasicHeap<K : Comparable<K>, V> : Heap<K, V> {
     private val nodes = ArrayList<BasicHeapNode<K, V>>()
 
-    override fun getMin() : BasicHeapNode<K, V>? {
+    override fun getMin() : Node<K, V>? {
         return if (nodes.isEmpty()) {
             null
         } else {
@@ -11,7 +11,7 @@ class BasicHeap<K: Comparable<K>, V> : Heap<BasicHeapNode<K, V>, K, V> {
         }
     }
 
-    override fun extractMin() : BasicHeapNode<K, V>? {
+    override fun extractMin() : Node<K, V>? {
         if (nodes.isEmpty()) {
             return null
         }
@@ -21,7 +21,7 @@ class BasicHeap<K: Comparable<K>, V> : Heap<BasicHeapNode<K, V>, K, V> {
         return result
     }
 
-    override fun insert(key: K, value: V) : BasicHeapNode<K, V> {
+    override fun insert(key: K, value: V) : Node<K, V> {
         val nextIndex = nodes.size
         val node = BasicHeapNode(key, value, nextIndex)
         nodes.add(node)

@@ -1,11 +1,11 @@
 package com.ainzzorl.algorithms
 
-interface Heap<N : Node<K, V>, K: Comparable<K>, V> {
-    fun getMin(): N?
+interface Heap<K: Comparable<K>, V> {
+    fun getMin(): Node<K, V>?
 
-    fun extractMin(): N?
+    fun extractMin(): Node<K, V>?
 
-    fun insert(key: K, value: V): N
+    fun insert(key: K, value: V): Node<K, V>
 
     fun decreaseKey(node: Node<K, V>, key: K)
 }

@@ -7,70 +7,50 @@ import kotlin.test.assertNull
 
 class HeapTest {
     @Test
-    fun testBasic() {
+    fun testBasicScenario() {
         val heap = BasicHeap<Int, String>()
         var node: Node<Int, String>?
 
         assertNull(heap.getMin())
         assertNull(heap.extractMin())
 
-        heap.insert(4, "d")
-        node = heap.getMin()
-        assertNotNull(node)
-        assertEquals(4, node.key)
-        assertEquals("d", node.value)
+        insertAndCheck(heap, 4, "d", 4, "d")
 
-        heap.insert(1, "a")
-        node = heap.getMin()
-        assertNotNull(node)
-        assertEquals(1, node.key)
-        assertEquals("a", node.value)
+        insertAndCheck(heap, 1, "a", 1, "a")
 
-        heap.insert(3, "c")
-        node = heap.getMin()
-        assertNotNull(node)
-        assertEquals(1, node.key)
-        assertEquals("a", node.value)
+        insertAndCheck(heap, 3, "c", 1, "a")
 
-        val e = heap.insert(6, "e")
-        node = heap.getMin()
-        assertNotNull(node)
-        assertEquals(1, node.key)
-        assertEquals("a", node.value)
+        val e = insertAndCheck(heap, 6,"e", 1, "a")
 
         heap.decreaseKey(e, -1)
-        node = heap.extractMin()
-        assertNotNull(node)
-        assertEquals(-1, node.key)
-        assertEquals("e", node.value)
 
-        heap.insert(2, "b")
-        node = heap.getMin()
-        assertNotNull(node)
-        assertEquals(1, node.key)
-        assertEquals("a", node.value)
+        extractMinAndCheck(heap, -1, "e")
 
-        node = heap.extractMin()
-        assertNotNull(node)
-        assertEquals(1, node.key)
-        assertEquals("a", node.value)
+        insertAndCheck(heap, 2, "b", 1, "a")
 
-        node = heap.extractMin()
-        assertNotNull(node)
-        assertEquals(2, node.key)
-        assertEquals("b", node.value)
-
-        node = heap.extractMin()
-        assertNotNull(node)
-        assertEquals(3, node.key)
-        assertEquals("c", node.value)
-
-        node = heap.extractMin()
-        assertNotNull(node)
-        assertEquals(4, node.key)
-        assertEquals("d", node.value)
-
+        extractMinAndCheck(heap, 1, "a")
+        extractMinAndCheck(heap, 2, "b")
+        extractMinAndCheck(heap, 3, "c")
+        extractMinAndCheck(heap, 4, "d")
         assertNull(heap.getMin())
         assertNull(heap.extractMin())
+    }
+
+    private fun insertAndCheck(
+            heap: Heap<Int, String>, key: Int, value: String, expectedMinKey: Int, expectedMinValue: String) : Node<Int, String> {
+        val node = heap.insert(key, value)
+        val min = heap.getMin()
+        assertNotNull(min)
+        assertEquals(expectedMinKey, min.key)
+        assertEquals(expectedMinValue, min.value)
+        return node
+    }
+
+    private fun extractMinAndCheck(
+            heap: Heap<Int, String>, expectedMinKey: Int, expectedMinValue: String) {
+        val min = heap.extractMin()
+        assertNotNull(min)
+        assertEquals(expectedMinKey, min.key)
+        assertEquals(expectedMinValue, min.value)
     }
 }
