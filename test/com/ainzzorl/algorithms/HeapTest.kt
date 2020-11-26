@@ -1,16 +1,11 @@
 package com.ainzzorl.algorithms
 
-import org.junit.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 import kotlin.test.assertNull
 
-class HeapTest {
-    @Test
-    fun testBasicScenario() {
-        val heap = BasicHeap<Int, String>()
-        var node: Node<Int, String>?
-
+object HeapTest {
+    fun testBasicScenario(heap: BasicHeap<Int, String>) {
         assertNull(heap.getMin())
         assertNull(heap.extractMin())
 
