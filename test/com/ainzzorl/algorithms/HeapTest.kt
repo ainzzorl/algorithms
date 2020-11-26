@@ -5,7 +5,7 @@ import kotlin.test.assertNotNull
 import kotlin.test.assertNull
 
 object HeapTest {
-    fun testBasicScenario(heap: BasicHeap<Int, String>) {
+    fun testBasicScenario(heap: Heap<Int, String>) {
         assertNull(heap.getMin())
         assertNull(heap.extractMin())
 
