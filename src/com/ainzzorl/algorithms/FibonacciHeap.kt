@@ -1,8 +1,15 @@
 package com.ainzzorl.algorithms
 
+import kotlin.math.ceil
+import kotlin.math.ln
+import kotlin.math.log2
+import kotlin.system.exitProcess
+
+// TODO: generic way to iterate nodes in a list
 class FibonacciHeap<K : Comparable<K>, V> : Heap<K, V> {
     private var rootNode: FibonacciHeapNode<K, V>? = null
     private var minNode: FibonacciHeapNode<K, V>? = null
+    private var size = 0
 
     override fun getMin() : Node<K, V>? {
         return minNode
@@ -15,22 +22,40 @@ class FibonacciHeap<K : Comparable<K>, V> : Heap<K, V> {
 
         val result = minNode
 
-        // TODO: consolidate instead!
+        if (minNode!!.anyChild != null) {
+            val stop = minNode!!.anyChild!!
+            var cur = minNode!!.anyChild!!
+
+            do {
+                val nextChild = cur.right
+                insertIntoRootNodes(cur)
+                cur = nextChild
+            } while (cur != stop)
+            minNode!!.anyChild = null
+        }
 
         removeFromRootList(minNode!!)
+        size--
         minNode = null
 
         if (rootNode != null) {
-            val stop = rootNode
-            var cur = rootNode!!
-            do {
-                if (minNode == null || cur.key < minNode!!.key) {
-                    minNode = cur
-                }
-                cur = cur.right
-            } while (cur != stop)
+//            val stop = rootNode
+//            var cur = rootNode!!
+//            do {
+//                if (minNode == null || cur.key < minNode!!.key) {
+//                    minNode = cur
+//                }
+//                cur = cur.right
+//            } while (cur != stop)
+            println("After extracting min (${result!!.key}), pre consolidation")
+            printTree()
+            consolidate()
         }
 
+        if (result != null) {
+            println("After extracting min (${result!!.key}), post consolidation")
+            printTree()
+        }
         return result
     }
 
@@ -40,6 +65,7 @@ class FibonacciHeap<K : Comparable<K>, V> : Heap<K, V> {
             minNode = node
         }
         insertIntoRootNodes(node)
+        size++
         println("After inserting $key")
         printTree()
         return node
@@ -54,6 +80,7 @@ class FibonacciHeap<K : Comparable<K>, V> : Heap<K, V> {
     }
 
     private fun insertIntoRootNodes(node: FibonacciHeapNode<K, V>) {
+        node.parent = null
         if (rootNode == null) {
             node.left = node
             node.right = node
@@ -86,15 +113,100 @@ class FibonacciHeap<K : Comparable<K>, V> : Heap<K, V> {
             println("Empty root nodes")
             return
         }
+        println("Size: ${size}")
         val stop = rootNode
         var cur = rootNode!!
         do {
-            print("[${cur.key}] ")
-            if (minNode == null || cur.key < minNode!!.key) {
-                minNode = cur
+            println("[${cur.key}], degree: ${cur.degree}")
+            if (cur.anyChild != null) {
+                printTree(cur.anyChild!!, 2)
             }
             cur = cur.right
         } while (cur != stop)
         println()
+    }
+
+    private fun printTree(printStart: FibonacciHeapNode<K, V>, offset: Int) {
+        if (offset > 10) {
+            println("Offset is too big!")
+            exitProcess(1)
+        }
+        var cur = printStart
+        do {
+            println(" ".repeat(offset) + "[${cur.key}], child of ${cur.parent!!.key}, degree: ${cur.degree}")
+            if (cur.anyChild != null) {
+                printTree(cur.anyChild!!, offset + 2)
+            }
+            cur = cur.right
+        } while (cur != printStart)
+        println()
+    }
+
+    private fun consolidate() {
+        val maxDegree = ceil(log2(size.toDouble())).toInt() * 2 + 1
+        val degreeArray = arrayOfNulls<FibonacciHeapNode<K, V>>(maxDegree)
+
+        val initialRootNodes = mutableListOf<FibonacciHeapNode<K, V>>()
+        val stop = rootNode
+        var it = rootNode!!
+        do {
+            initialRootNodes.add(it)
+            it = it.right
+        } while (it != stop)
+
+        for (it in initialRootNodes) {
+            var node = it
+            var degree = node.degree
+            while (degreeArray[degree] != null) {
+                var other = degreeArray[degree]!!
+                if (node.key > other.key) {
+                    val t = node
+                    node = other
+                    other = t
+                }
+                heapLink(other, node)
+                degreeArray[degree] = null
+                degree++
+            }
+            degreeArray[degree] = node
+        }
+
+        minNode = null
+        rootNode = null
+        degreeArray.forEach { node ->
+            if (node != null) {
+                if (minNode == null) {
+                    rootNode = node
+                    rootNode!!.left = rootNode!!
+                    rootNode!!.right = rootNode!!
+                    minNode = node
+                    node.parent = null
+                } else {
+                    insertIntoRootNodes(node)
+                    if (node.key < minNode!!.key) {
+                        minNode = node
+                    }
+                }
+            }
+        }
+    }
+
+    private fun heapLink(fromNode: FibonacciHeapNode<K, V>, toNode: FibonacciHeapNode<K, V>) {
+        removeFromRootList(fromNode)
+        fromNode.marked = false
+        fromNode.parent = toNode
+        toNode.degree++
+
+        if (toNode.anyChild == null) {
+            fromNode.left = fromNode
+            fromNode.right = fromNode
+            toNode.anyChild = fromNode
+        } else {
+            fromNode.right = toNode.anyChild!!
+            fromNode.left = toNode.anyChild!!.left
+
+            toNode.anyChild!!.left.right = fromNode
+            toNode.anyChild!!.left = fromNode
+        }
     }
 }
