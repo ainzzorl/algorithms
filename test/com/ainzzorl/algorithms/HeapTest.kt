@@ -10,9 +10,7 @@ object HeapTest {
         assertNull(heap.extractMin())
 
         insertAndCheck(heap, 4, "d", 4, "d")
-
         insertAndCheck(heap, 1, "a", 1, "a")
-
         insertAndCheck(heap, 3, "c", 1, "a")
 
         val e = insertAndCheck(heap, 6,"e", 1, "a")
@@ -23,6 +21,26 @@ object HeapTest {
 
         insertAndCheck(heap, 2, "b", 1, "a")
 
+        extractMinAndCheck(heap, 1, "a")
+        extractMinAndCheck(heap, 2, "b")
+        extractMinAndCheck(heap, 3, "c")
+        extractMinAndCheck(heap, 4, "d")
+        assertNull(heap.getMin())
+        assertNull(heap.extractMin())
+    }
+
+    // Simpler test without decreasing keys
+    fun testInsertExtract(heap: Heap<Int, String>) {
+        assertNull(heap.getMin())
+        assertNull(heap.extractMin())
+
+        insertAndCheck(heap, 4, "d", 4, "d")
+        insertAndCheck(heap, 1, "a", 1, "a")
+        insertAndCheck(heap, 3, "c", 1, "a")
+        insertAndCheck(heap, -1, "e", -1, "e")
+        insertAndCheck(heap, 2, "b", -1, "e")
+
+        extractMinAndCheck(heap, -1, "e")
         extractMinAndCheck(heap, 1, "a")
         extractMinAndCheck(heap, 2, "b")
         extractMinAndCheck(heap, 3, "c")

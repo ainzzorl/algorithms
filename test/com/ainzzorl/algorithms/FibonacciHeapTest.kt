@@ -7,4 +7,9 @@ class FibonacciHeapTest {
     fun testBasicScenario() {
         HeapTest.testBasicScenario(FibonacciHeap())
     }
+
+    @Test
+    fun testInsertExtract() {
+        HeapTest.testInsertExtract(FibonacciHeap())
+    }
 }

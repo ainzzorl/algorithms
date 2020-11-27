@@ -7,4 +7,9 @@ class BasicHeapTest {
     fun testBasicScenario() {
         HeapTest.testBasicScenario(BasicHeap())
     }
+
+    @Test
+    fun testInsertExtract() {
+        HeapTest.testInsertExtract(BasicHeap())
+    }
 }
