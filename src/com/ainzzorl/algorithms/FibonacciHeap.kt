@@ -70,7 +70,7 @@ class FibonacciHeap<K : Comparable<K>, V> : Heap<K, V> {
     private fun removeFromRootList(node: FibonacciHeapNode<K, V>) {
         node.parent = null
         if (rootNode == node) {
-            if (rootNode!!.left == rootNode!!.right) {
+            if (rootNode!!.right == rootNode!!) {
                 // last element
                 rootNode = null
             } else {
