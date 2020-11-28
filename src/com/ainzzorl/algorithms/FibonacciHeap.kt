@@ -50,9 +50,10 @@ class FibonacciHeap<K : Comparable<K>, V> : Heap<K, V> {
 
         node.key = key
 
-        if (node.parent != null && node.key < node.parent!!.key) {
+        val parent = node.parent
+        if (parent != null && node.key < parent.key) {
             cut(node)
-            cascadingCut(node)
+            cascadingCut(parent)
         }
 
         if (node.key < minNode!!.key) {
@@ -87,7 +88,7 @@ class FibonacciHeap<K : Comparable<K>, V> : Heap<K, V> {
                 node.marked = true
             } else {
                 cut(node)
-                cascadingCut(node.parent!!)
+                cascadingCut(parent)
             }
         }
     }
