@@ -57,11 +57,12 @@ class BasicHeap<K : Comparable<K>, V> : Heap<K, V> {
     }
 
     private fun heapifyUp(index: Int) {
-        if (index == 0  || nodes[index].key > nodes[index/2].key) {
+        val parentIndex = (index - 1) / 2
+        if (index == 0  || nodes[index].key > nodes[parentIndex].key) {
             return
         }
-        swap(index, index / 2)
-        heapifyUp(index / 2)
+        swap(index, parentIndex)
+        heapifyUp(parentIndex)
     }
 
     private fun heapifyDown(index: Int) {
