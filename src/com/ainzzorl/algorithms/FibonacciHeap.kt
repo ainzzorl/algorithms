@@ -76,7 +76,49 @@ class FibonacciHeap<K : Comparable<K>, V> : Heap<K, V> {
         check(node is FibonacciHeapNode) { "Expected an instance of FibonacciHeapNode" }
 
         node.key = key
-        // TODO: implement
+
+        if (node.parent != null && node.key < node.parent!!.key) {
+            cut(node)
+            cascadingCut(node)
+        }
+
+        if (node.key < minNode!!.key) {
+            minNode = node
+        }
+    }
+
+    private fun cut(node: FibonacciHeapNode<K, V>) {
+        val parent = node.parent!!
+        parent.degree--
+
+        node.left.right = node.right
+        node.right.left = node.left
+
+        if (node == parent.anyChild) {
+            parent.anyChild = if (node.right == node) {
+                // only child
+                null
+            } else {
+                node.right
+            }
+        }
+
+        insertIntoRootNodes(node)
+
+        node.parent = null // TODO: seems unnecessary
+        node.marked = false
+    }
+
+    private fun cascadingCut(node: FibonacciHeapNode<K, V>) {
+        val parent = node.parent
+        if (parent != null) {
+            if (!node.marked) {
+                node.marked = true
+            } else {
+                cut(node)
+                cascadingCut(node.parent!!)
+            }
+        }
     }
 
     private fun insertIntoRootNodes(node: FibonacciHeapNode<K, V>) {
@@ -97,11 +139,11 @@ class FibonacciHeap<K : Comparable<K>, V> : Heap<K, V> {
     private fun removeFromRootList(node: FibonacciHeapNode<K, V>) {
         node.parent = null
         if (rootNode == node) {
-            if (rootNode!!.right == rootNode!!) {
+            rootNode = if (rootNode!!.right == rootNode!!) {
                 // last element
-                rootNode = null
+                null
             } else {
-                rootNode = node.right
+                node.right
             }
         }
         node.left.right = node.right
