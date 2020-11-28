@@ -7,7 +7,7 @@ import kotlin.test.assertNull
 import kotlin.test.fail
 
 class HeapComparisonTest {
-    private val ROUNDS = 1000
+    private val ROUNDS = 100000
     private val MIN_KEY = -10000000
     private val MAX_KEY = 10000000
 
