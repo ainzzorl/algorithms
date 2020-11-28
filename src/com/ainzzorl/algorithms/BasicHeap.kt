@@ -1,5 +1,9 @@
 package com.ainzzorl.algorithms
 
+/**
+ * Simple binary min heap.
+ * Added mostly for testing Fibonacci heaps.
+ */
 class BasicHeap<K : Comparable<K>, V> : Heap<K, V> {
     private val nodes = ArrayList<BasicHeapNode<K, V>>()
 
