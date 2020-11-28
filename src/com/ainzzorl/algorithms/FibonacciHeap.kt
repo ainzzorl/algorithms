@@ -174,10 +174,6 @@ class FibonacciHeap<K : Comparable<K>, V> : Heap<K, V> {
     }
 
     private fun printTree(printStart: FibonacciHeapNode<K, V>, offset: Int) {
-        if (offset > 10) {
-            println("Offset is too big!")
-            exitProcess(1)
-        }
         var cur = printStart
         do {
             println(" ".repeat(offset) + "[${cur.key}], child of ${cur.parent!!.key}, degree: ${cur.degree}")
