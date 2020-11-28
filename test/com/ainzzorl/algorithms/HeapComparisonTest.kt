@@ -11,6 +11,12 @@ class HeapComparisonTest {
     private val MIN_KEY = -10000000
     private val MAX_KEY = 10000000
 
+    // More inserts and extractions.
+    // Otherwise heaps will always be small.
+    private val INSERT_OP_WEIGHT = 3
+    private val EXTRACT_OP_WEIGHT = 1
+    private val DECREASE_OP_WEIGHT = 1
+
     @Test
     fun compareBasicAndFibonacciHeaps() {
         val basic = BasicHeap<Int, String>()
@@ -23,8 +29,8 @@ class HeapComparisonTest {
         val fibonacciKeyToNode = HashMap<Int, Node<Int, String>>()
 
         repeat(ROUNDS) {
-            when (val op = random.nextInt(3)) {
-                0 -> {
+            when (val op = random.nextInt(INSERT_OP_WEIGHT + EXTRACT_OP_WEIGHT + DECREASE_OP_WEIGHT)) {
+                in 0 until INSERT_OP_WEIGHT -> {
                     // Insert
                     val key = nextUnusedKey(random, basicKeyToNode.keys)
                     val value = java.util.UUID.randomUUID().toString()
@@ -35,7 +41,7 @@ class HeapComparisonTest {
                     basicKeyToNode[key] = basicNode
                     fibonacciKeyToNode[key] = fibonacciNode
                 }
-                1 -> {
+                in INSERT_OP_WEIGHT until INSERT_OP_WEIGHT + EXTRACT_OP_WEIGHT -> {
                     // Extract min
                     val basicNode = basic.extractMin()
                     val fibonacciNode = fibonacci.extractMin()
@@ -49,7 +55,7 @@ class HeapComparisonTest {
                         fibonacciKeyToNode.remove(fibonacciNode!!.key)
                     }
                 }
-                2 -> {
+                in INSERT_OP_WEIGHT + EXTRACT_OP_WEIGHT until INSERT_OP_WEIGHT + EXTRACT_OP_WEIGHT + DECREASE_OP_WEIGHT -> {
                     // Decrease key
                     if (basic.getMin() != null && fibonacci.getMin() != null) {
                         val oldKey = basicKeyToNode.keys.random(random)
