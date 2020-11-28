@@ -49,10 +49,10 @@ class HeapComparisonTest {
                     assertEqualNodes(binaryNode, fibonacciNode)
 
                     if (binaryNode != null) {
-                        binaryKeyToNode.remove(binaryNode!!.key)
+                        binaryKeyToNode.remove(binaryNode.key)
                     }
                     if (fibonacciNode != null) {
-                        fibonacciKeyToNode.remove(fibonacciNode!!.key)
+                        fibonacciKeyToNode.remove(fibonacciNode.key)
                     }
                 }
                 in INSERT_OP_WEIGHT + EXTRACT_OP_WEIGHT until INSERT_OP_WEIGHT + EXTRACT_OP_WEIGHT + DECREASE_OP_WEIGHT -> {
