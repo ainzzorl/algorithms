@@ -3,7 +3,6 @@ package com.ainzzorl.algorithms
 import kotlin.math.ceil
 import kotlin.math.log2
 
-// TODO: generic way to iterate nodes in a list
 class FibonacciHeap<K : Comparable<K>, V> : Heap<K, V> {
     private var rootNode: FibonacciHeapNode<K, V>? = null
     private var minNode: FibonacciHeapNode<K, V>? = null
@@ -126,45 +125,36 @@ class FibonacciHeap<K : Comparable<K>, V> : Heap<K, V> {
             return
         }
         println("Size: $size")
-        val stop = rootNode
-        var cur = rootNode!!
-        do {
-            val minMark = if (cur == minNode) {
+        for (node in SiblingNodeIterator(rootNode!!)) {
+            val minMark = if (node == minNode) {
                 "*"
             } else {
                 ""
             }
-            println("[${cur.key}]$minMark, degree: ${cur.degree}")
-            if (cur.anyChild != null) {
-                visualize(cur.anyChild!!, 2)
+            println("[${node.key}]$minMark, degree: ${node.degree}")
+            if (node.anyChild != null) {
+                visualize(node, 2)
             }
-            cur = cur.right
-        } while (cur != stop)
+        }
         println()
     }
 
     private fun visualize(printStart: FibonacciHeapNode<K, V>, offset: Int) {
-        var cur = printStart
-        do {
-            println(" ".repeat(offset) + "[${cur.key}], child of ${cur.parent!!.key}, degree: ${cur.degree}")
-            if (cur.anyChild != null) {
-                visualize(cur.anyChild!!, offset + 2)
+        for (child in SiblingNodeIterator(printStart.anyChild!!)) {
+            println(" ".repeat(offset) + "[${child.key}], child of ${child.parent!!.key}, degree: ${child.degree}")
+            if (child.anyChild != null) {
+                visualize(child.anyChild!!, offset + 2)
             }
-            cur = cur.right
-        } while (cur != printStart)
+        }
     }
 
     private fun consolidate() {
         val maxDegree = ceil(log2(size.toDouble())).toInt() * 2 + 1
         val degreeArray = arrayOfNulls<FibonacciHeapNode<K, V>>(maxDegree)
 
-        val initialRootNodes = mutableListOf<FibonacciHeapNode<K, V>>()
-        val stop = rootNode
-        var it = rootNode!!
-        do {
-            initialRootNodes.add(it)
-            it = it.right
-        } while (it != stop)
+        // Can't iterate root nodes while they are changing.
+        // Expanding them to a list first.
+        val initialRootNodes = SiblingNodeIterator(rootNode!!).asSequence().toList()
 
         for (it in initialRootNodes) {
             var node = it
@@ -224,16 +214,30 @@ class FibonacciHeap<K : Comparable<K>, V> : Heap<K, V> {
 
     private fun moveChildrenToRoot(node: FibonacciHeapNode<K, V>) {
         if (node.anyChild != null) {
-            val stop = node.anyChild!!
-            var cur = node.anyChild!!
-
-            do {
-                val nextChild = cur.right
-                insertIntoRootNodes(cur)
-                cur = nextChild
-            } while (cur != stop)
+            for (child in SiblingNodeIterator(node.anyChild!!)) {
+                insertIntoRootNodes(child)
+            }
             node.anyChild = null
             node.degree = 0
+        }
+    }
+
+    inner class SiblingNodeIterator(private val start: FibonacciHeapNode<K, V>) : Iterator<FibonacciHeapNode<K, V>> {
+        var nextValue = start
+        var done = false
+
+        override fun hasNext(): Boolean {
+            return !done
+        }
+
+        override fun next(): FibonacciHeapNode<K, V> {
+            val result = nextValue
+            if (nextValue.right == start) {
+                done = true
+            } else {
+                nextValue = nextValue.right
+            }
+            return result
         }
     }
 }
