@@ -8,4 +8,6 @@ interface Heap<K: Comparable<K>, V> {
     fun insert(key: K, value: V): Node<K, V>
 
     fun decreaseKey(node: Node<K, V>, key: K)
+
+    fun visualize()
 }

@@ -37,6 +37,25 @@ class BasicHeap<K : Comparable<K>, V> : Heap<K, V> {
         heapifyUp(node.index)
     }
 
+    override fun visualize() {
+        if (nodes.isEmpty()) {
+            println("Empty heap")
+        } else {
+            visualize(0, 0)
+        }
+        println()
+    }
+
+    private fun visualize(index: Int, offset: Int) {
+        println(" ".repeat(offset) + "[${nodes[index].key}]")
+        if (index * 2 + 1 < nodes.size) {
+            visualize(index * 2 + 1, offset + 2)
+        }
+        if (index * 2 + 2 < nodes.size) {
+            visualize(index * 2 + 2, offset + 2)
+        }
+    }
+
     private fun heapifyUp(index: Int) {
         if (index == 0  || nodes[index].key > nodes[index/2].key) {
             return

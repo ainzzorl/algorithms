@@ -67,6 +67,7 @@ class HeapComparisonTest {
                     fail("Unexpected op: $op")
                 }
             }
+            basic.visualize()
             val basicMin = basic.getMin()
             val fibonacciMin = fibonacci.getMin()
 

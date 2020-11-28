@@ -48,13 +48,13 @@ class FibonacciHeap<K : Comparable<K>, V> : Heap<K, V> {
 //                cur = cur.right
 //            } while (cur != stop)
             println("After extracting min (${result!!.key}), pre consolidation")
-            printTree()
+            visualize()
             consolidate()
         }
 
         if (result != null) {
             println("After extracting min (${result!!.key}), post consolidation")
-            printTree()
+            visualize()
         }
         return result
     }
@@ -67,7 +67,7 @@ class FibonacciHeap<K : Comparable<K>, V> : Heap<K, V> {
         insertIntoRootNodes(node)
         size++
         println("After inserting $key")
-        printTree()
+        visualize()
         return node
     }
 
@@ -150,7 +150,7 @@ class FibonacciHeap<K : Comparable<K>, V> : Heap<K, V> {
         node.right.left = node.left
     }
 
-    private fun printTree() {
+    override fun visualize() {
         if (rootNode == null) {
             println("Empty root nodes")
             return
