@@ -77,7 +77,13 @@ class HeapComparisonTest {
                     fail("Unexpected op: $op")
                 }
             }
-            basic.visualize()
+
+            // Uncomment for debugging
+            // println("Visualizing basic heap")
+            // basic.visualize()
+            // println("Visualizing Fibonacci heap")
+            // basic.visualize()
+
             val basicMin = basic.getMin()
             val fibonacciMin = fibonacci.getMin()
 

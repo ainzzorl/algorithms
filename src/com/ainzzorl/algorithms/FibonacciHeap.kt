@@ -45,15 +45,9 @@ class FibonacciHeap<K : Comparable<K>, V> : Heap<K, V> {
 //                }
 //                cur = cur.right
 //            } while (cur != stop)
-            println("After extracting min (${result!!.key}), pre consolidation")
-            visualize()
             consolidate()
         }
 
-        if (result != null) {
-            println("After extracting min (${result!!.key}), post consolidation")
-            visualize()
-        }
         return result
     }
 
@@ -64,8 +58,6 @@ class FibonacciHeap<K : Comparable<K>, V> : Heap<K, V> {
         }
         insertIntoRootNodes(node)
         size++
-        println("After inserting $key")
-        visualize()
         return node
     }
 
@@ -164,19 +156,19 @@ class FibonacciHeap<K : Comparable<K>, V> : Heap<K, V> {
             }
             println("[${cur.key}]$minMark, degree: ${cur.degree}")
             if (cur.anyChild != null) {
-                printTree(cur.anyChild!!, 2)
+                visualize(cur.anyChild!!, 2)
             }
             cur = cur.right
         } while (cur != stop)
         println()
     }
 
-    private fun printTree(printStart: FibonacciHeapNode<K, V>, offset: Int) {
+    private fun visualize(printStart: FibonacciHeapNode<K, V>, offset: Int) {
         var cur = printStart
         do {
             println(" ".repeat(offset) + "[${cur.key}], child of ${cur.parent!!.key}, degree: ${cur.degree}")
             if (cur.anyChild != null) {
-                printTree(cur.anyChild!!, offset + 2)
+                visualize(cur.anyChild!!, offset + 2)
             }
             cur = cur.right
         } while (cur != printStart)
