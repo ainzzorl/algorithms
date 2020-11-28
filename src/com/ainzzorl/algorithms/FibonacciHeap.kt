@@ -177,14 +177,10 @@ class FibonacciHeap<K : Comparable<K>, V> : Heap<K, V> {
         rootNode = null
         degreeArray.forEach { node ->
             if (node != null) {
+                insertIntoRootNodes(node)
                 if (minNode == null) {
-                    rootNode = node
-                    rootNode!!.left = rootNode!!
-                    rootNode!!.right = rootNode!!
                     minNode = node
-                    node.parent = null
                 } else {
-                    insertIntoRootNodes(node)
                     if (node.key < minNode!!.key) {
                         minNode = node
                     }
