@@ -18,7 +18,7 @@ dependencies {
     testImplementation(
             'org.jetbrains.kotlin:kotlin-test-junit'
     )
-    testRuntime('org.jetbrains.kotlin:kotlin-test-junit')
+    testRuntimeOnly('org.jetbrains.kotlin:kotlin-test-junit')
     ktlint "com.pinterest:ktlint:0.39.0"
 }
 
