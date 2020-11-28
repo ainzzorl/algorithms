@@ -3,7 +3,7 @@ package com.ainzzorl.algorithms
 class BasicHeap<K : Comparable<K>, V> : Heap<K, V> {
     private val nodes = ArrayList<BasicHeapNode<K, V>>()
 
-    override fun getMin() : Node<K, V>? {
+    override fun getMin(): Node<K, V>? {
         return if (nodes.isEmpty()) {
             null
         } else {
@@ -11,7 +11,7 @@ class BasicHeap<K : Comparable<K>, V> : Heap<K, V> {
         }
     }
 
-    override fun extractMin() : Node<K, V>? {
+    override fun extractMin(): Node<K, V>? {
         if (nodes.isEmpty()) {
             return null
         }
@@ -21,7 +21,7 @@ class BasicHeap<K : Comparable<K>, V> : Heap<K, V> {
         return result
     }
 
-    override fun insert(key: K, value: V) : Node<K, V> {
+    override fun insert(key: K, value: V): Node<K, V> {
         val nextIndex = nodes.size
         val node = BasicHeapNode(key, value, nextIndex)
         nodes.add(node)
@@ -58,7 +58,7 @@ class BasicHeap<K : Comparable<K>, V> : Heap<K, V> {
 
     private fun heapifyUp(index: Int) {
         val parentIndex = (index - 1) / 2
-        if (index == 0  || nodes[index].key > nodes[parentIndex].key) {
+        if (index == 0 || nodes[index].key > nodes[parentIndex].key) {
             return
         }
         swap(index, parentIndex)

@@ -85,7 +85,7 @@ class HeapComparisonTest {
         }
     }
 
-    private fun nextUnusedKey(random: Random, used: Set<Int>) : Int {
+    private fun nextUnusedKey(random: Random, used: Set<Int>): Int {
         val key = random.nextInt(MIN_KEY, MAX_KEY)
         return if (used.contains(key)) {
             nextUnusedKey(random, used)
@@ -94,7 +94,7 @@ class HeapComparisonTest {
         }
     }
 
-    private fun nextUnusedDecreasedKey(random: Random, used: Set<Int>, oldKey: Int) : Int {
+    private fun nextUnusedDecreasedKey(random: Random, used: Set<Int>, oldKey: Int): Int {
         val minus = random.nextInt(MAX_KEY - MIN_KEY)
         return if (used.contains(oldKey - minus)) {
             nextUnusedDecreasedKey(random, used, oldKey)

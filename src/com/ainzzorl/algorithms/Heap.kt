@@ -1,6 +1,6 @@
 package com.ainzzorl.algorithms
 
-interface Heap<K: Comparable<K>, V> {
+interface Heap<K : Comparable<K>, V> {
     fun getMin(): Node<K, V>?
 
     fun extractMin(): Node<K, V>?

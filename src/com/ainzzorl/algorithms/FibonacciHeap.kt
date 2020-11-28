@@ -1,9 +1,7 @@
 package com.ainzzorl.algorithms
 
 import kotlin.math.ceil
-import kotlin.math.ln
 import kotlin.math.log2
-import kotlin.system.exitProcess
 
 // TODO: generic way to iterate nodes in a list
 class FibonacciHeap<K : Comparable<K>, V> : Heap<K, V> {
@@ -11,11 +9,11 @@ class FibonacciHeap<K : Comparable<K>, V> : Heap<K, V> {
     private var minNode: FibonacciHeapNode<K, V>? = null
     private var size = 0
 
-    override fun getMin() : Node<K, V>? {
+    override fun getMin(): Node<K, V>? {
         return minNode
     }
 
-    override fun extractMin() : Node<K, V>? {
+    override fun extractMin(): Node<K, V>? {
         if (minNode == null) {
             return null
         }
@@ -59,7 +57,7 @@ class FibonacciHeap<K : Comparable<K>, V> : Heap<K, V> {
         return result
     }
 
-    override fun insert(key: K, value: V) : Node<K, V> {
+    override fun insert(key: K, value: V): Node<K, V> {
         val node = FibonacciHeapNode(key, value)
         if (minNode == null || node.key < minNode!!.key) {
             minNode = node
@@ -155,7 +153,7 @@ class FibonacciHeap<K : Comparable<K>, V> : Heap<K, V> {
             println("Empty root nodes")
             return
         }
-        println("Size: ${size}")
+        println("Size: $size")
         val stop = rootNode
         var cur = rootNode!!
         do {
@@ -164,7 +162,7 @@ class FibonacciHeap<K : Comparable<K>, V> : Heap<K, V> {
             } else {
                 ""
             }
-            println("[${cur.key}]${minMark}, degree: ${cur.degree}")
+            println("[${cur.key}]$minMark, degree: ${cur.degree}")
             if (cur.anyChild != null) {
                 printTree(cur.anyChild!!, 2)
             }
