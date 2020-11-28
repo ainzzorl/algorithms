@@ -159,7 +159,12 @@ class FibonacciHeap<K : Comparable<K>, V> : Heap<K, V> {
         val stop = rootNode
         var cur = rootNode!!
         do {
-            println("[${cur.key}], degree: ${cur.degree}")
+            val minMark = if (cur == minNode) {
+                "*"
+            } else {
+                ""
+            }
+            println("[${cur.key}]${minMark}, degree: ${cur.degree}")
             if (cur.anyChild != null) {
                 printTree(cur.anyChild!!, 2)
             }
@@ -181,7 +186,6 @@ class FibonacciHeap<K : Comparable<K>, V> : Heap<K, V> {
             }
             cur = cur.right
         } while (cur != printStart)
-        println()
     }
 
     private fun consolidate() {
