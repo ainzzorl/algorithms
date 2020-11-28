@@ -20,31 +20,13 @@ class FibonacciHeap<K : Comparable<K>, V> : Heap<K, V> {
 
         val result = minNode
 
-        if (minNode!!.anyChild != null) {
-            val stop = minNode!!.anyChild!!
-            var cur = minNode!!.anyChild!!
-
-            do {
-                val nextChild = cur.right
-                insertIntoRootNodes(cur)
-                cur = nextChild
-            } while (cur != stop)
-            minNode!!.anyChild = null
-        }
-
+        moveChildrenToRoot(minNode!!)
         removeFromRootList(minNode!!)
+
         size--
         minNode = null
 
         if (rootNode != null) {
-//            val stop = rootNode
-//            var cur = rootNode!!
-//            do {
-//                if (minNode == null || cur.key < minNode!!.key) {
-//                    minNode = cur
-//                }
-//                cur = cur.right
-//            } while (cur != stop)
             consolidate()
         }
 
@@ -239,6 +221,21 @@ class FibonacciHeap<K : Comparable<K>, V> : Heap<K, V> {
 
             toNode.anyChild!!.left.right = fromNode
             toNode.anyChild!!.left = fromNode
+        }
+    }
+
+    private fun moveChildrenToRoot(node: FibonacciHeapNode<K, V>) {
+        if (node.anyChild != null) {
+            val stop = node.anyChild!!
+            var cur = node.anyChild!!
+
+            do {
+                val nextChild = cur.right
+                insertIntoRootNodes(cur)
+                cur = nextChild
+            } while (cur != stop)
+            node.anyChild = null
+            node.degree = 0
         }
     }
 }
