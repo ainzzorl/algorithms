@@ -3,6 +3,10 @@ package com.ainzzorl.algorithms
 import kotlin.math.ceil
 import kotlin.math.log2
 
+/**
+ * Fibonacci Heap.
+ * Based on "Introduction to Algorithms" by Cormen, Leiserson, Rivest and Stein (CLRS).
+ */
 class FibonacciHeap<K : Comparable<K>, V> : Heap<K, V> {
     private var rootNode: FibonacciHeapNode<K, V>? = null
     private var minNode: FibonacciHeapNode<K, V>? = null
