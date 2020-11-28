@@ -42,8 +42,12 @@ class HeapComparisonTest {
 
                     assertEqualNodes(basicNode, fibonacciNode)
 
-                    basicKeyToNode.remove(basicNode!!.key)
-                    fibonacciKeyToNode.remove(fibonacciNode!!.key)
+                    if (basicNode != null) {
+                        basicKeyToNode.remove(basicNode!!.key)
+                    }
+                    if (fibonacciNode != null) {
+                        fibonacciKeyToNode.remove(fibonacciNode!!.key)
+                    }
                 }
                 2 -> {
                     // Decrease key
