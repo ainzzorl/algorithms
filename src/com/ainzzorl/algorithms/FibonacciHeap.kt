@@ -34,10 +34,8 @@ class FibonacciHeap<K : Comparable<K>, V> : Heap<K, V> {
 
     override fun insert(key: K, value: V): Node<K, V> {
         val node = FibonacciHeapNode(key, value)
-        if (minNode == null || node.key < minNode!!.key) {
-            minNode = node
-        }
         insertIntoRootNodes(node)
+        tryForMin(node)
         size++
         return node
     }
@@ -178,13 +176,7 @@ class FibonacciHeap<K : Comparable<K>, V> : Heap<K, V> {
         degreeArray.forEach { node ->
             if (node != null) {
                 insertIntoRootNodes(node)
-                if (minNode == null) {
-                    minNode = node
-                } else {
-                    if (node.key < minNode!!.key) {
-                        minNode = node
-                    }
-                }
+                tryForMin(node)
             }
         }
     }
@@ -215,6 +207,12 @@ class FibonacciHeap<K : Comparable<K>, V> : Heap<K, V> {
             }
             node.anyChild = null
             node.degree = 0
+        }
+    }
+
+    private fun tryForMin(node: FibonacciHeapNode<K, V>) {
+        if (minNode == null || node.key < minNode!!.key) {
+            minNode = node
         }
     }
 
