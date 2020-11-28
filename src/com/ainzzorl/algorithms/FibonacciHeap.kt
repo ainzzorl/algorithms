@@ -76,8 +76,6 @@ class FibonacciHeap<K : Comparable<K>, V> : Heap<K, V> {
         }
 
         insertIntoRootNodes(node)
-
-        node.parent = null // TODO: seems unnecessary
         node.marked = false
     }
 
