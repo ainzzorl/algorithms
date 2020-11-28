@@ -1,11 +1,11 @@
 package com.ainzzorl.algorithms
 
 /**
- * Simple binary min heap.
+ * Binary min heap.
  * Added mostly for testing Fibonacci heaps.
  */
-class BasicHeap<K : Comparable<K>, V> : Heap<K, V> {
-    private val nodes = ArrayList<BasicHeapNode<K, V>>()
+class BinaryHeap<K : Comparable<K>, V> : Heap<K, V> {
+    private val nodes = ArrayList<BinaryHeapNode<K, V>>()
 
     override fun getMin(): Node<K, V>? {
         return if (nodes.isEmpty()) {
@@ -27,7 +27,7 @@ class BasicHeap<K : Comparable<K>, V> : Heap<K, V> {
 
     override fun insert(key: K, value: V): Node<K, V> {
         val nextIndex = nodes.size
-        val node = BasicHeapNode(key, value, nextIndex)
+        val node = BinaryHeapNode(key, value, nextIndex)
         nodes.add(node)
         heapifyUp(nextIndex)
         return node
@@ -35,7 +35,7 @@ class BasicHeap<K : Comparable<K>, V> : Heap<K, V> {
 
     override fun decreaseKey(node: Node<K, V>, key: K) {
         check(key < node.key) { "New value is greater than the old" }
-        check(node is BasicHeapNode) { "Expected an instance of BasicHeapNode" }
+        check(node is BinaryHeapNode) { "Expected an instance of BinaryHeapNode" }
 
         node.key = key
         heapifyUp(node.index)

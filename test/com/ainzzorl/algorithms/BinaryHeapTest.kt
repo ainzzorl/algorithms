@@ -2,14 +2,14 @@ package com.ainzzorl.algorithms
 
 import org.junit.Test
 
-class BasicHeapTest {
+class BinaryHeapTest {
     @Test
     fun testBasicScenario() {
-        HeapTest.testBasicScenario(BasicHeap())
+        HeapTest.testBasicScenario(BinaryHeap())
     }
 
     @Test
     fun testInsertExtract() {
-        HeapTest.testInsertExtract(BasicHeap())
+        HeapTest.testInsertExtract(BinaryHeap())
     }
 }

@@ -18,38 +18,38 @@ class HeapComparisonTest {
     private val DECREASE_OP_WEIGHT = 1
 
     @Test
-    fun compareBasicAndFibonacciHeaps() {
-        val basic = BasicHeap<Int, String>()
+    fun compareBinaryAndFibonacciHeaps() {
+        val binary = BinaryHeap<Int, String>()
         val fibonacci = FibonacciHeap<Int, String>()
 
         val random = Random(123)
 
         // Enforcing key uniqueness for simplicity.
-        val basicKeyToNode = HashMap<Int, Node<Int, String>>()
+        val binaryKeyToNode = HashMap<Int, Node<Int, String>>()
         val fibonacciKeyToNode = HashMap<Int, Node<Int, String>>()
 
         repeat(ROUNDS) {
             when (val op = random.nextInt(INSERT_OP_WEIGHT + EXTRACT_OP_WEIGHT + DECREASE_OP_WEIGHT)) {
                 in 0 until INSERT_OP_WEIGHT -> {
                     // Insert
-                    val key = nextUnusedKey(random, basicKeyToNode.keys)
+                    val key = nextUnusedKey(random, binaryKeyToNode.keys)
                     val value = java.util.UUID.randomUUID().toString()
 
-                    val basicNode = basic.insert(key, value)
+                    val binaryNode = binary.insert(key, value)
                     val fibonacciNode = fibonacci.insert(key, value)
 
-                    basicKeyToNode[key] = basicNode
+                    binaryKeyToNode[key] = binaryNode
                     fibonacciKeyToNode[key] = fibonacciNode
                 }
                 in INSERT_OP_WEIGHT until INSERT_OP_WEIGHT + EXTRACT_OP_WEIGHT -> {
                     // Extract min
-                    val basicNode = basic.extractMin()
+                    val binaryNode = binary.extractMin()
                     val fibonacciNode = fibonacci.extractMin()
 
-                    assertEqualNodes(basicNode, fibonacciNode)
+                    assertEqualNodes(binaryNode, fibonacciNode)
 
-                    if (basicNode != null) {
-                        basicKeyToNode.remove(basicNode!!.key)
+                    if (binaryNode != null) {
+                        binaryKeyToNode.remove(binaryNode!!.key)
                     }
                     if (fibonacciNode != null) {
                         fibonacciKeyToNode.remove(fibonacciNode!!.key)
@@ -57,19 +57,19 @@ class HeapComparisonTest {
                 }
                 in INSERT_OP_WEIGHT + EXTRACT_OP_WEIGHT until INSERT_OP_WEIGHT + EXTRACT_OP_WEIGHT + DECREASE_OP_WEIGHT -> {
                     // Decrease key
-                    if (basic.getMin() != null && fibonacci.getMin() != null) {
-                        val oldKey = basicKeyToNode.keys.random(random)
-                        val newKey = nextUnusedDecreasedKey(random, basicKeyToNode.keys, oldKey)
+                    if (binary.getMin() != null && fibonacci.getMin() != null) {
+                        val oldKey = binaryKeyToNode.keys.random(random)
+                        val newKey = nextUnusedDecreasedKey(random, binaryKeyToNode.keys, oldKey)
 
-                        val basicNode = basicKeyToNode[oldKey]!!
+                        val binaryNode = binaryKeyToNode[oldKey]!!
                         val fibonacciNode = fibonacciKeyToNode[oldKey]!!
 
-                        basic.decreaseKey(basicNode, newKey)
+                        binary.decreaseKey(binaryNode, newKey)
                         fibonacci.decreaseKey(fibonacciNode, newKey)
 
-                        basicKeyToNode.remove(oldKey)
+                        binaryKeyToNode.remove(oldKey)
                         fibonacciKeyToNode.remove(oldKey)
-                        basicKeyToNode[newKey] = basicNode
+                        binaryKeyToNode[newKey] = binaryNode
                         fibonacciKeyToNode[newKey] = fibonacciNode
                     }
                 }
@@ -79,15 +79,15 @@ class HeapComparisonTest {
             }
 
             // Uncomment for debugging
-            // println("Visualizing basic heap")
-            // basic.visualize()
+            // println("Visualizing binary heap")
+            // binary.visualize()
             // println("Visualizing Fibonacci heap")
-            // basic.visualize()
+            // fibonacci.visualize()
 
-            val basicMin = basic.getMin()
+            val binaryMin = binary.getMin()
             val fibonacciMin = fibonacci.getMin()
 
-            assertEqualNodes(basicMin, fibonacciMin)
+            assertEqualNodes(binaryMin, fibonacciMin)
         }
     }
 
