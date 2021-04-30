@@ -54,11 +54,14 @@ object SeamCarving {
         val storeArtifacts = cmd.hasOption("artifacts")
         val artifactsPath = cmd.getOptionValue("artifacts")
 
-        val img: BufferedImage = ImageIO.read(File(inputFilePath))
-        EnergyMap.makeGrey(img)
+        val original: BufferedImage = ImageIO.read(File(inputFilePath))
+        val grey = EnergyMap.toGrey(original)
+        val energyMap = EnergyMap.toEnergyMap(grey)
 
         if (storeArtifacts) {
-            ImageIO.write(img, "jpg", File("$artifactsPath/grey.jpg"))
+            ImageIO.write(grey, "jpg", File("$artifactsPath/grey.jpg"))
+            ImageIO.write(energyMap, "jpg", File("$artifactsPath/energy.jpg"))
+            println("Wrote all")
         }
     }
 }

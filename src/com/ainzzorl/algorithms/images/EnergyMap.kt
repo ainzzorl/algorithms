@@ -1,13 +1,30 @@
 package com.ainzzorl.algorithms.images
 
 import java.awt.image.BufferedImage
+import kotlin.math.abs
 import kotlin.math.pow
 
 object EnergyMap {
-//    fun fromImage(image: BufferedImage) {
-//    }
+    // Assuming the image is greyscale!
+    fun toEnergyMap(image: BufferedImage) : BufferedImage {
+        val result = ImageUtils.deepCopy(image);
+        for (x in 0 until image.width) {
+            for (y in 0 until image.height) {
+                val xnext = if (x < image.width - 1) image.getRGB(x + 1, y) else 0
+                val xprev = if (x > 0) image.getRGB(x - 1, y) else 0
+                val ynext = if (y < image.height - 1) image.getRGB(x, y + 1) else 0
+                val yprev = if (y > 0) image.getRGB(x, y - 1) else 0
 
-    fun makeGrey(image: BufferedImage) {
+                // TODO: try magnitude instead
+                val energy = abs(xnext - xprev) + abs(ynext - yprev)
+                result.setRGB(x, y, energy)
+            }
+        }
+        return result
+    }
+
+    fun toGrey(image: BufferedImage) : BufferedImage {
+        val result = ImageUtils.deepCopy(image);
         for (x in 0 until image.width) {
             for (y in 0 until image.height) {
                 val rgb: Int = image.getRGB(x, y)
@@ -26,8 +43,9 @@ object EnergyMap {
                 // Gamma compand and rescale to byte range:
                 val grayLevel = (255.0 * lum.toDouble().pow(1.0 / 2.2)).toInt()
                 val gray = (grayLevel shl 16) + (grayLevel shl 8) + grayLevel
-                image.setRGB(x, y, gray)
+                result.setRGB(x, y, gray)
             }
         }
+        return result
     }
 }
