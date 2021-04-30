@@ -6,7 +6,12 @@ import org.apache.commons.cli.HelpFormatter
 import org.apache.commons.cli.Option
 import org.apache.commons.cli.Options
 import org.apache.commons.cli.ParseException
+import java.awt.Color
+import java.awt.image.BufferedImage
+import java.io.File
+import javax.imageio.ImageIO
 import kotlin.system.exitProcess
+
 
 object SeamCarving {
     @JvmStatic
@@ -45,9 +50,15 @@ object SeamCarving {
         }
 
         val inputFilePath = cmd.getOptionValue("input")
-        val outputFilePath = cmd.getOptionValue("output")
+        //val outputFilePath = cmd.getOptionValue("output")
+        val storeArtifacts = cmd.hasOption("artifacts")
+        val artifactsPath = cmd.getOptionValue("artifacts")
 
-        println(inputFilePath)
-        println(outputFilePath)
+        val img: BufferedImage = ImageIO.read(File(inputFilePath))
+        EnergyMap.makeGrey(img)
+
+        if (storeArtifacts) {
+            ImageIO.write(img, "jpg", File("$artifactsPath/grey.jpg"))
+        }
     }
 }

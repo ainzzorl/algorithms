@@ -5,3 +5,5 @@ lib
 .gradle
 gradle
 build
+.DS_Store
+data/images/seam-carving
