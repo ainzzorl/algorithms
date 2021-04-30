@@ -20,6 +20,9 @@ dependencies {
     )
     testRuntimeOnly('org.jetbrains.kotlin:kotlin-test-junit')
     ktlint "com.pinterest:ktlint:0.39.0"
+
+    // https://mvnrepository.com/artifact/commons-cli/commons-cli
+    compile 'commons-cli:commons-cli:1.4'
 }
 
 task ktlint(type: JavaExec, group: "verification") {
