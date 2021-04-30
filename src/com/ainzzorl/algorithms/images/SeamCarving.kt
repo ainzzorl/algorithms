@@ -74,8 +74,9 @@ object SeamCarving {
             current = removeSeam(current, seam)
             grey = removeSeam(grey, seam)
             if (storeArtifacts) {
-                ImageIO.write(paintVerticalSeam(previous, seam), "jpg", File("$artifactsPath/seam-${i}.jpg"))
-                ImageIO.write(current, "jpg", File("$artifactsPath/wip-${i}.jpg"))
+                val iterationPrefix = i.toString().padStart(5, '0')
+                ImageIO.write(paintVerticalSeam(previous, seam), "jpg", File("$artifactsPath/iteration-${iterationPrefix}-seam.jpg"))
+                ImageIO.write(current, "jpg", File("$artifactsPath/iteration-${iterationPrefix}-wip.jpg"))
             }
         }
 
