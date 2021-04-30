@@ -9,7 +9,6 @@ import org.apache.commons.cli.ParseException
 import java.awt.image.BufferedImage
 import java.io.File
 import javax.imageio.ImageIO
-import kotlin.math.pow
 import kotlin.system.exitProcess
 
 object SeamCarving {
@@ -71,10 +70,11 @@ object SeamCarving {
         repeat(original.width - targetWidth) { i ->
             val energyMap = EnergyMap.toEnergyMap(grey)
             val seam = getLowEnergyVerticalSeam(energyMap)
+            val previous = current
             current = removeSeam(current, seam)
             grey = removeSeam(grey, seam)
             if (storeArtifacts) {
-                ImageIO.write(paintVerticalSeam(current, seam), "jpg", File("$artifactsPath/seam-${i}.jpg"))
+                ImageIO.write(paintVerticalSeam(previous, seam), "jpg", File("$artifactsPath/seam-${i}.jpg"))
                 ImageIO.write(current, "jpg", File("$artifactsPath/wip-${i}.jpg"))
             }
         }
@@ -83,8 +83,47 @@ object SeamCarving {
     }
 
     private fun getLowEnergyVerticalSeam(energyMap: BufferedImage) : IntArray {
-        // TODO: implement for real
-        return (0 until energyMap.height).toList().toIntArray()
+        val dp = Array(energyMap.width) { IntArray(energyMap.height) }
+
+        for (x in 0 until energyMap.width) {
+            dp[x][0] = energyMap.getRGB(x, 0)
+        }
+        for (y in 1 until energyMap.height) {
+            for (x in 0 until energyMap.width) {
+                dp[x][y] = dp[x][y - 1]
+                if (x > 0 && dp[x - 1][y - 1] < dp[x][y]) {
+                    dp[x][y] = dp[x - 1][y - 1]
+                }
+                if (x < energyMap.width - 1 && dp[x + 1][y - 1] < dp[x][y]) {
+                    dp[x][y] = dp[x + 1][y - 1]
+                }
+                dp[x][y] += energyMap.getRGB(x, y)
+            }
+        }
+
+        val result = IntArray(energyMap.height)
+        var bestX = 0
+        for (x in 1 until energyMap.width) {
+            if (dp[x][energyMap.height - 1] < dp[bestX][energyMap.height - 1]) {
+                bestX = x
+            }
+        }
+        var x = bestX
+        for (y in energyMap.height - 1 downTo 0) {
+            result[y] = x
+            if (y > 0) {
+                var newX = x
+                if (x > 0 && dp[x - 1][y - 1] < dp[x][y - 1]) {
+                    newX = x - 1
+                }
+                if (x < energyMap.width - 1 && dp[x + 1][y - 1] < dp[x][y - 1]) {
+                    newX = x + 1
+                }
+                x = newX
+            }
+        }
+
+        return result
     }
 
     private fun paintVerticalSeam(image: BufferedImage, seam: IntArray) : BufferedImage {
