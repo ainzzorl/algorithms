@@ -52,3 +52,14 @@ sourceSets {
         }
     }
 }
+
+task fatJar(type: Jar) {
+    baseName = 'algorithms-kotlin-fat-jar'
+    from {
+        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+
+    with(tasks["jar"] as CopySpec)
+
+    with jar
+}
