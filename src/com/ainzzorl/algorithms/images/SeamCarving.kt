@@ -6,12 +6,11 @@ import org.apache.commons.cli.HelpFormatter
 import org.apache.commons.cli.Option
 import org.apache.commons.cli.Options
 import org.apache.commons.cli.ParseException
-import java.awt.Color
 import java.awt.image.BufferedImage
 import java.io.File
 import javax.imageio.ImageIO
+import kotlin.math.pow
 import kotlin.system.exitProcess
-
 
 object SeamCarving {
     @JvmStatic
@@ -50,7 +49,7 @@ object SeamCarving {
         }
 
         val inputFilePath = cmd.getOptionValue("input")
-        //val outputFilePath = cmd.getOptionValue("output")
+        val outputFilePath = cmd.getOptionValue("output")
         val storeArtifacts = cmd.hasOption("artifacts")
         val artifactsPath = cmd.getOptionValue("artifacts")
 
@@ -58,10 +57,46 @@ object SeamCarving {
         val grey = EnergyMap.toGrey(original)
         val energyMap = EnergyMap.toEnergyMap(grey)
 
+        val seam = getLowEnergyVerticalSeam(energyMap)
+        if (storeArtifacts) {
+            ImageIO.write(paintVerticalSeam(original, seam), "jpg", File("$artifactsPath/seam.jpg"))
+        }
+        val result = removeSeam(original, seam)
+
+        // TODO: use provided width and height
+        // TODO: support horizontal seams
+
         if (storeArtifacts) {
             ImageIO.write(grey, "jpg", File("$artifactsPath/grey.jpg"))
             ImageIO.write(energyMap, "jpg", File("$artifactsPath/energy.jpg"))
-            println("Wrote all")
         }
+
+        ImageIO.write(result, "jpg", File(outputFilePath))
+    }
+
+    private fun getLowEnergyVerticalSeam(energyMap: BufferedImage) : IntArray {
+        // TODO: implement for real
+        return (0 until energyMap.height).toList().toIntArray()
+    }
+
+    private fun paintVerticalSeam(image: BufferedImage, seam: IntArray) : BufferedImage {
+        val result = ImageUtils.deepCopy(image)
+        for (y in 0 until image.height) {
+            result.setRGB(seam[y], y, 0xFF0000) // Red
+        }
+        return result
+    }
+
+    private fun removeSeam(image: BufferedImage, seam: IntArray) : BufferedImage {
+        val result = BufferedImage(image.width - 1, image.height, image.type)
+        for (y in 0 until image.height) {
+            for (x in 0 until seam[y]) {
+                result.setRGB(x, y, image.getRGB(x, y))
+            }
+            for (x in seam[y] until image.width - 1) {
+                result.setRGB(x, y, image.getRGB(x + 1, y))
+            }
+        }
+        return result
     }
 }
