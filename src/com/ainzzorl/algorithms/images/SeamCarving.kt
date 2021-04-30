@@ -6,7 +6,6 @@ import org.apache.commons.cli.HelpFormatter
 import org.apache.commons.cli.Option
 import org.apache.commons.cli.Options
 import org.apache.commons.cli.ParseException
-import java.awt.Image
 import java.awt.image.BufferedImage
 import java.io.File
 import javax.imageio.ImageIO
@@ -68,12 +67,13 @@ object SeamCarving {
         }
 
         val fixedVertical = carveVertically(original, targetWidth, storeArtifacts, artifactsPath, false, 0)
+        // We implement horizontal carving by transposing the image and doing vertical carving
         val fixedHorizontal = carveVertically(ImageUtils.transpose(fixedVertical), targetHeight, storeArtifacts, artifactsPath, true, original.width - targetWidth)
         val result = ImageUtils.transpose(fixedHorizontal)
         ImageIO.write(result, "jpg", File(outputFilePath))
     }
 
-    private fun carveVertically(image: BufferedImage, targetWidth: Int, storeArtifacts: Boolean, artifactsPath: String, transpose: Boolean, iterationStart: Int) : BufferedImage {
+    private fun carveVertically(image: BufferedImage, targetWidth: Int, storeArtifacts: Boolean, artifactsPath: String, transpose: Boolean, iterationStart: Int): BufferedImage {
         var current = image
         var grey: BufferedImage = EnergyMap.toGrey(image)
 
@@ -96,7 +96,7 @@ object SeamCarving {
     }
 
 
-    private fun getLowEnergyVerticalSeam(energyMap: BufferedImage) : IntArray {
+    private fun getLowEnergyVerticalSeam(energyMap: BufferedImage): IntArray {
         val dp = Array(energyMap.width) { IntArray(energyMap.height) }
 
         for (x in 0 until energyMap.width) {
@@ -140,7 +140,7 @@ object SeamCarving {
         return result
     }
 
-    private fun paintVerticalSeam(image: BufferedImage, seam: IntArray) : BufferedImage {
+    private fun paintVerticalSeam(image: BufferedImage, seam: IntArray): BufferedImage {
         val result = ImageUtils.deepCopy(image)
         for (y in 0 until image.height) {
             result.setRGB(seam[y], y, 0xFF0000) // Red
@@ -148,7 +148,7 @@ object SeamCarving {
         return result
     }
 
-    private fun removeSeam(image: BufferedImage, seam: IntArray) : BufferedImage {
+    private fun removeSeam(image: BufferedImage, seam: IntArray): BufferedImage {
         val result = BufferedImage(image.width - 1, image.height, image.type)
         for (y in 0 until image.height) {
             for (x in 0 until seam[y]) {

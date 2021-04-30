@@ -6,7 +6,7 @@ import kotlin.math.pow
 
 object EnergyMap {
     // Assuming the image is greyscale!
-    fun toEnergyMap(image: BufferedImage) : BufferedImage {
+    fun toEnergyMap(image: BufferedImage): BufferedImage {
         val result = ImageUtils.deepCopy(image);
         for (x in 0 until image.width) {
             for (y in 0 until image.height) {
@@ -23,7 +23,7 @@ object EnergyMap {
         return result
     }
 
-    fun toGrey(image: BufferedImage) : BufferedImage {
+    fun toGrey(image: BufferedImage): BufferedImage {
         val result = ImageUtils.deepCopy(image);
         for (x in 0 until image.width) {
             for (y in 0 until image.height) {

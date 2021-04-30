@@ -1,7 +1,6 @@
 package com.ainzzorl.algorithms.images
 
 import java.awt.image.BufferedImage
-import kotlin.math.abs
 
 object ImageUtils {
     fun deepCopy(bi: BufferedImage): BufferedImage {
