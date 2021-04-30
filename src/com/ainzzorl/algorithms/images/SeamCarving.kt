@@ -54,24 +54,32 @@ object SeamCarving {
         val artifactsPath = cmd.getOptionValue("artifacts")
 
         val original: BufferedImage = ImageIO.read(File(inputFilePath))
-        val grey = EnergyMap.toGrey(original)
-        val energyMap = EnergyMap.toEnergyMap(grey)
-
-        val seam = getLowEnergyVerticalSeam(energyMap)
-        if (storeArtifacts) {
-            ImageIO.write(paintVerticalSeam(original, seam), "jpg", File("$artifactsPath/seam.jpg"))
-        }
-        val result = removeSeam(original, seam)
-
-        // TODO: use provided width and height
-        // TODO: support horizontal seams
+        var grey: BufferedImage = EnergyMap.toGrey(original)
 
         if (storeArtifacts) {
             ImageIO.write(grey, "jpg", File("$artifactsPath/grey.jpg"))
-            ImageIO.write(energyMap, "jpg", File("$artifactsPath/energy.jpg"))
         }
 
-        ImageIO.write(result, "jpg", File(outputFilePath))
+        // TODO: support horizontal seams
+        val targetWidth = if (cmd.hasOption("output-width")) {
+            cmd.getOptionValue("output-width").toInt()
+        } else {
+            original.width
+        }
+
+        var current = original
+        repeat(original.width - targetWidth) { i ->
+            val energyMap = EnergyMap.toEnergyMap(grey)
+            val seam = getLowEnergyVerticalSeam(energyMap)
+            current = removeSeam(current, seam)
+            grey = removeSeam(grey, seam)
+            if (storeArtifacts) {
+                ImageIO.write(paintVerticalSeam(current, seam), "jpg", File("$artifactsPath/seam-${i}.jpg"))
+                ImageIO.write(current, "jpg", File("$artifactsPath/wip-${i}.jpg"))
+            }
+        }
+
+        ImageIO.write(current, "jpg", File(outputFilePath))
     }
 
     private fun getLowEnergyVerticalSeam(energyMap: BufferedImage) : IntArray {
