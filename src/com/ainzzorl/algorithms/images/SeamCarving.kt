@@ -6,6 +6,7 @@ import org.apache.commons.cli.HelpFormatter
 import org.apache.commons.cli.Option
 import org.apache.commons.cli.Options
 import org.apache.commons.cli.ParseException
+import java.awt.Image
 import java.awt.image.BufferedImage
 import java.io.File
 import javax.imageio.ImageIO
@@ -53,35 +54,47 @@ object SeamCarving {
         val artifactsPath = cmd.getOptionValue("artifacts")
 
         val original: BufferedImage = ImageIO.read(File(inputFilePath))
-        var grey: BufferedImage = EnergyMap.toGrey(original)
 
-        if (storeArtifacts) {
-            ImageIO.write(grey, "jpg", File("$artifactsPath/grey.jpg"))
-        }
-
-        // TODO: support horizontal seams
         val targetWidth = if (cmd.hasOption("output-width")) {
             cmd.getOptionValue("output-width").toInt()
         } else {
             original.width
         }
 
-        var current = original
-        repeat(original.width - targetWidth) { i ->
+        val targetHeight = if (cmd.hasOption("output-height")) {
+            cmd.getOptionValue("output-height").toInt()
+        } else {
+            original.height
+        }
+
+        val fixedVertical = carveVertically(original, targetWidth, storeArtifacts, artifactsPath, false, 0)
+        val fixedHorizontal = carveVertically(ImageUtils.transpose(fixedVertical), targetHeight, storeArtifacts, artifactsPath, true, original.width - targetWidth)
+        val result = ImageUtils.transpose(fixedHorizontal)
+        ImageIO.write(result, "jpg", File(outputFilePath))
+    }
+
+    private fun carveVertically(image: BufferedImage, targetWidth: Int, storeArtifacts: Boolean, artifactsPath: String, transpose: Boolean, iterationStart: Int) : BufferedImage {
+        var current = image
+        var grey: BufferedImage = EnergyMap.toGrey(image)
+
+        repeat(image.width - targetWidth) { i ->
             val energyMap = EnergyMap.toEnergyMap(grey)
             val seam = getLowEnergyVerticalSeam(energyMap)
             val previous = current
             current = removeSeam(current, seam)
             grey = removeSeam(grey, seam)
             if (storeArtifacts) {
-                val iterationPrefix = i.toString().padStart(5, '0')
-                ImageIO.write(paintVerticalSeam(previous, seam), "jpg", File("$artifactsPath/iteration-${iterationPrefix}-seam.jpg"))
-                ImageIO.write(current, "jpg", File("$artifactsPath/iteration-${iterationPrefix}-wip.jpg"))
+                val iterationPrefix = (i + iterationStart).toString().padStart(5, '0')
+
+                val outputPaintedSeam = if (transpose) ImageUtils.transpose(paintVerticalSeam(previous, seam)) else paintVerticalSeam(previous, seam)
+                ImageIO.write(outputPaintedSeam, "jpg", File("$artifactsPath/iteration-${iterationPrefix}-seam.jpg"))
+                val outputCurrent = if (transpose) ImageUtils.transpose(current) else current
+                ImageIO.write(outputCurrent, "jpg", File("$artifactsPath/iteration-${iterationPrefix}-wip.jpg"))
             }
         }
-
-        ImageIO.write(current, "jpg", File(outputFilePath))
+        return current
     }
+
 
     private fun getLowEnergyVerticalSeam(energyMap: BufferedImage) : IntArray {
         val dp = Array(energyMap.width) { IntArray(energyMap.height) }
