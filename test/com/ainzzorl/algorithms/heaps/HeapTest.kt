@@ -1,4 +1,4 @@
-package com.ainzzorl.algorithms
+package com.ainzzorl.algorithms.heaps
 
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
@@ -50,11 +50,11 @@ object HeapTest {
     }
 
     private fun insertAndCheck(
-        heap: Heap<Int, String>,
-        key: Int,
-        value: String,
-        expectedMinKey: Int,
-        expectedMinValue: String
+            heap: Heap<Int, String>,
+            key: Int,
+            value: String,
+            expectedMinKey: Int,
+            expectedMinValue: String
     ): Node<Int, String> {
         val node = heap.insert(key, value)
         val min = heap.getMin()
@@ -65,9 +65,9 @@ object HeapTest {
     }
 
     private fun extractMinAndCheck(
-        heap: Heap<Int, String>,
-        expectedMinKey: Int,
-        expectedMinValue: String
+            heap: Heap<Int, String>,
+            expectedMinKey: Int,
+            expectedMinValue: String
     ) {
         val min = heap.extractMin()
         assertNotNull(min)

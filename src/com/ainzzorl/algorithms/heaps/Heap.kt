@@ -1,4 +1,4 @@
-package com.ainzzorl.algorithms
+package com.ainzzorl.algorithms.heaps
 
 interface Heap<K : Comparable<K>, V> {
     fun getMin(): Node<K, V>?

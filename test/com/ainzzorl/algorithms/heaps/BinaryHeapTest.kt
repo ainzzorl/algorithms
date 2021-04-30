@@ -1,4 +1,4 @@
-package com.ainzzorl.algorithms
+package com.ainzzorl.algorithms.heaps
 
 import org.junit.Test
 

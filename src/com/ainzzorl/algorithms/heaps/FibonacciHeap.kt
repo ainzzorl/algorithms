@@ -1,4 +1,4 @@
-package com.ainzzorl.algorithms
+package com.ainzzorl.algorithms.heaps
 
 import kotlin.math.ceil
 import kotlin.math.log2

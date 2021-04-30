@@ -1,4 +1,4 @@
-package com.ainzzorl.algorithms
+package com.ainzzorl.algorithms.heaps
 
 interface Node<K : Comparable<K>, V> {
     var key: K

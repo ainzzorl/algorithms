@@ -1,4 +1,4 @@
-package com.ainzzorl.algorithms
+package com.ainzzorl.algorithms.heaps
 
 class FibonacciHeapNode<K : Comparable<K>, V>(override var key: K, override val value: V) : Node<K, V> {
     var degree = 0
