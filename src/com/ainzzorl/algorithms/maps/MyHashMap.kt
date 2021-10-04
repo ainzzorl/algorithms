@@ -62,6 +62,10 @@ class MyHashMap <K, V> : MutableMap<K, V> {
         }
         bucket.add(MyMutableEntry(key, value))
         size++
+
+        if (size.toFloat() / buckets.size > LOAD_FACTOR) {
+            rehash()
+        }
         return null
     }
 
@@ -80,6 +84,19 @@ class MyHashMap <K, V> : MutableMap<K, V> {
             }
         }
         return null
+    }
+
+    private fun rehash() {
+        val newBuckets = Array<MutableList<MutableMap.MutableEntry<K, V>>>(buckets.size * 2) { ArrayList() }
+
+        repeat(buckets.size) { oldBucketIndex ->
+            val oldBucket = buckets[oldBucketIndex]
+            for (kv in oldBucket) {
+                val newHash = kv.key.hashCode().absoluteValue % newBuckets.size
+                val newBucket = newBuckets[newHash]
+                newBucket.add(kv)
+        }}
+        buckets = newBuckets
     }
 
     class MyMutableEntry<K, V>(override val key: K, override var value: V) : MutableMap.MutableEntry<K, V> {
