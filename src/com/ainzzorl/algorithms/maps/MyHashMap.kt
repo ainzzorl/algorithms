@@ -47,7 +47,7 @@ class MyHashMap <K, V> : MutableMap<K, V> {
     }
 
     override fun isEmpty(): Boolean {
-        TODO("Not yet implemented")
+        return size == 0
     }
 
     override fun put(key: K, value: V): V? {
@@ -80,6 +80,7 @@ class MyHashMap <K, V> : MutableMap<K, V> {
             val kv = bucket[i]
             if (kv.key!! == key) {
                 bucket.removeAt(i)
+                size--
                 return kv.value
             }
         }

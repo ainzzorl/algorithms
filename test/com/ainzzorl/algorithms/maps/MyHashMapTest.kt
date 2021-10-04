@@ -11,34 +11,49 @@ class MyHashMapTest {
     @Test
     fun testBasic() {
         val myHashMap = MyHashMap<String, String>()
+        assertEquals(0, myHashMap.size)
+        assertTrue(myHashMap.isEmpty())
 
         assertFalse(myHashMap.containsKey("a"))
         myHashMap["a"] = "1"
         assertTrue(myHashMap.containsKey("a"))
         assertEquals("1", myHashMap["a"])
+        assertEquals(1, myHashMap.size)
+        assertFalse(myHashMap.isEmpty())
 
         assertFalse(myHashMap.containsKey("b"))
         myHashMap["b"] = "2"
         assertTrue(myHashMap.containsKey("b"))
         assertEquals("1", myHashMap["a"])
         assertEquals("2", myHashMap["b"])
+        assertEquals(2, myHashMap.size)
+        assertFalse(myHashMap.isEmpty())
 
         myHashMap["a"] = "11"
         assertTrue(myHashMap.containsKey("a"))
         assertEquals("11", myHashMap["a"])
+        assertEquals(2, myHashMap.size)
+        assertFalse(myHashMap.isEmpty())
 
         myHashMap.remove("b")
         assertFalse(myHashMap.containsKey("b"))
         assertTrue(myHashMap.containsKey("a"))
+        assertEquals(1, myHashMap.size)
+        assertFalse(myHashMap.isEmpty())
 
         myHashMap.remove("a")
         assertFalse(myHashMap.containsKey("a"))
         assertFalse(myHashMap.containsKey("b"))
+        assertEquals(0, myHashMap.size)
+        assertTrue(myHashMap.isEmpty())
     }
 
     @Test
     fun manyStrings() {
         val myHashMap = MyHashMap<String, String>()
+        assertEquals(0, myHashMap.size)
+        assertTrue(myHashMap.isEmpty())
+
         val standardHashMap = HashMap<String, String>()
 
         repeat(1000) { i ->
@@ -48,6 +63,8 @@ class MyHashMapTest {
             standardHashMap[s] = i.toString()
             assertTrue(myHashMap.containsKey(s))
             assertEquals(i.toString(), myHashMap[s])
+            assertEquals(i + 1, myHashMap.size)
+            assertFalse(myHashMap.isEmpty())
         }
 
         val keys = standardHashMap.keys.sorted()
@@ -57,11 +74,13 @@ class MyHashMapTest {
             myHashMap.remove(key)
             standardHashMap.remove(key)
             assertFalse(myHashMap.containsKey(key))
+            assertEquals(standardHashMap.size, myHashMap.size)
         }
-    }
 
-    // TODO: test size
-    // TODO: test isEmpty
+        assertEquals(0, myHashMap.size)
+        assertTrue(myHashMap.isEmpty())
+    }
+    
     // TODO: test clear
     // TODO: test iteration
 }
