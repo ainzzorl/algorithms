@@ -80,7 +80,20 @@ class MyHashMapTest {
         assertEquals(0, myHashMap.size)
         assertTrue(myHashMap.isEmpty())
     }
-    
-    // TODO: test clear
+
+    @Test
+    fun testClear() {
+        val myHashMap = MyHashMap<String, String>()
+
+        myHashMap["a"] = "1"
+        myHashMap["b"] = "2"
+        assertEquals(2, myHashMap.size)
+
+        myHashMap.clear()
+        assertTrue(myHashMap.isEmpty())
+        assertFalse(myHashMap.containsKey("a"))
+        assertFalse(myHashMap.containsKey("b"))
+    }
+
     // TODO: test iteration
 }

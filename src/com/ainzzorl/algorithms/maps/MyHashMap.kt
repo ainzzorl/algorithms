@@ -17,7 +17,8 @@ class MyHashMap <K, V> : MutableMap<K, V> {
     private var buckets: Array<MutableList<MutableMap.MutableEntry<K, V>>> = Array(INITIAL_CAPACITY) { ArrayList() }
 
     override fun clear() {
-        TODO("Not yet implemented")
+        size = 0
+        buckets = Array(INITIAL_CAPACITY) { ArrayList() }
     }
 
     override fun containsKey(key: K): Boolean {
