@@ -47,7 +47,7 @@ class MyHashMapTest {
             myHashMap[s] = i.toString()
             standardHashMap[s] = i.toString()
             assertTrue(myHashMap.containsKey(s))
-            assertEquals(i.toString(), s)
+            assertEquals(i.toString(), myHashMap[s])
         }
 
         val keys = standardHashMap.keys.sorted()
