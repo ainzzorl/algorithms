@@ -63,7 +63,7 @@ class MyHashMap <K, V> : MutableMap<K, V> {
         bucket.add(MyMutableEntry(key, value))
         size++
 
-        if (size.toFloat() / buckets.size > LOAD_FACTOR) {
+        if (buckets.size < MAXIMUM_CAPACITY && size.toFloat() / buckets.size > LOAD_FACTOR) {
             rehash()
         }
         return null
