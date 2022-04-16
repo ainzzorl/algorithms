@@ -6,4 +6,4 @@ lib
 gradle
 build
 .DS_Store
-data/images/seam-carving
+kotlin/data/images/seam-carving
