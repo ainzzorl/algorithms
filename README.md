@@ -1,7 +1,11 @@
-# Algorithms in Kotlin
+# Algorithms
 
-## Binary Heaps
+## Binary Heaps (Kotlin)
 
-## Fibonacci Heaps
+## Fibonacci Heaps (Kotlin)
 
-## Seam Carving
+## Seam Carving (Kotlin)
+
+## Hash Maps (Kotlin)
+
+## Myers Diff Algorithm (Ruby)
