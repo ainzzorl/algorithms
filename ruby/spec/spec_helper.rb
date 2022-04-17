@@ -1,4 +1,4 @@
-Dir[File.dirname(__FILE__) + '/../lib/algorithms/*.rb'].each { |file| require file }
+Dir[File.dirname(__FILE__) + '/../lib/algorithms/**/*.rb'].each { |file| require file }
 
 RSpec.configure do |config|
   # rspec-expectations config goes here. You can use an alternate

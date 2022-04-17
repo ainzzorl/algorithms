@@ -1,0 +1,17 @@
+def apply_script(a, script)
+  res = a.map { |c| [c] }
+  script.each do |op|
+    case op[:op]
+    when :delete
+      res[op[:index]].pop
+    when :insert
+      while res.length < op[:index] + 1 do
+        res << []
+      end
+      res[op[:index]] = op[:items] + res[op[:index]]
+    else
+      raise "Unknown op: #{op[:op]}"
+    end
+  end
+  res.flatten
+end
