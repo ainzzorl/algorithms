@@ -1,4 +1,15 @@
 RSpec.describe Algorithms::Diff do
+  describe '#script_length' do
+    it 'counts script length' do
+      expect(script_length([{ op: :delete, index: 0 },
+                            { op: :delete, index: 1 },
+                            { op: :insert, index: 3, items: %w[B G] },
+                            { op: :delete, index: 5 },
+                            { op: :insert, index: 7,
+                              items: ['C'] }])).to eq(6)
+    end
+  end
+
   describe '#apply_script' do
     it 'handles empty script' do
       expect(apply_script('abcde'.chars, []).join).to eq('abcde')

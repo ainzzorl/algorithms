@@ -13,3 +13,7 @@ def apply_script(a, script)
   end
   res.flatten
 end
+
+def script_length(script)
+  script.map { |op| op.key?(:items) ? op[:items].length : 1 }.inject(:+)
+end
