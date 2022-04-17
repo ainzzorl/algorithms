@@ -5,9 +5,7 @@ def apply_script(a, script)
     when :delete
       res[op[:index]].pop
     when :insert
-      while res.length < op[:index] + 1 do
-        res << []
-      end
+      res << [] while res.length < op[:index] + 1
       res[op[:index]] = op[:items] + res[op[:index]]
     else
       raise "Unknown op: #{op[:op]}"

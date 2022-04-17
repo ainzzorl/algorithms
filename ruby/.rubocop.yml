@@ -1,6 +1,12 @@
 Metrics/CyclomaticComplexity:
   Max: 10
 
+Metrics/AbcSize:
+  Enabled: false
+
+Metrics/MethodLength:
+  Enabled: false
+
 Metrics/BlockLength:
   Exclude:
     - spec/**/*.rb
@@ -11,10 +17,13 @@ Metrics/PerceivedComplexity:
 Naming/FileName:
   Enabled: false
 
-Documentation:
+Naming/MethodParameterName:
   Enabled: false
 
 Style/FrozenStringLiteralComment:
+  Enabled: false
+
+Style/Documentation:
   Enabled: false
 
 AllCops:
