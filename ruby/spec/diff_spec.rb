@@ -71,4 +71,36 @@ RSpec.describe Algorithms::Diff do
       expect(apply_script(''.chars, script)).to eq('CBABAC'.chars)
     end
   end
+
+  describe '#myers_diff' do
+    def compare_to_naive(a, b)
+      myers_script = Algorithms::Diff.myers_diff(a.chars, b.chars)
+      naive_script = Algorithms::Diff.naive_diff(a.chars, b.chars)
+      expect(script_length(myers_script)).to eq(script_length(naive_script))
+      expect(apply_script(a.chars, myers_script)).to eq(b.chars)
+    end
+
+    it 'handles simple test' do
+      compare_to_naive('ABCABBA', 'CBABAC')
+    end
+
+    it 'handles equal strings' do
+      compare_to_naive('ABCABBA', 'ABCABBA')
+    end
+
+    it 'handles empty destination' do
+      compare_to_naive('ABCABBA', '')
+    end
+
+    it 'handles empty source' do
+      compare_to_naive('', 'CBABAC')
+    end
+
+    it 'handles long test' do
+      compare_to_naive(
+        'ACCCBAECBCADEBEBBBABDCADACCBEBDBCBACCCCADCEDDBCDADEDDBBBDECEACEBBDCDDEDEACBBCDDABBADAEEADAECCDCEEEAB',
+        'AEABEDCAEDECCEBAADEEDDAEEAEDDABBBCABEEADACDCABBADEBABEACDAEDDCAADEECEEEDAAEDEBBBCECEEAEEEECEDAA'
+      )
+    end
+  end
 end
