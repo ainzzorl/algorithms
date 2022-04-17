@@ -49,7 +49,14 @@ RSpec.describe Algorithms::Diff do
   describe '#naive_diff' do
     it 'returns working script' do
       script = Algorithms::Diff.naive_diff('ABCABBA'.chars, 'CBABAC'.chars)
+      expect(script_length(script)).to eq(5)
       expect(apply_script('ABCABBA'.chars, script)).to eq('CBABAC'.chars)
+    end
+
+    it 'handles equal strings' do
+      script = Algorithms::Diff.naive_diff('ABCABBA'.chars, 'ABCABBA'.chars)
+      expect(script_length(script)).to eq(0)
+      expect(apply_script('ABCABBA'.chars, script)).to eq('ABCABBA'.chars)
     end
 
     it 'handles empty destination' do

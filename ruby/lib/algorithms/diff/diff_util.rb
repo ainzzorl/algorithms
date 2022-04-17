@@ -15,5 +15,7 @@ def apply_script(a, script)
 end
 
 def script_length(script)
+  return 0 if script.empty?
+
   script.map { |op| op.key?(:items) ? op[:items].length : 1 }.inject(:+)
 end
