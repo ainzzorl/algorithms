@@ -51,5 +51,17 @@ RSpec.describe Algorithms::Diff do
       script = Algorithms::Diff.naive_diff('ABCABBA'.chars, 'CBABAC'.chars)
       expect(apply_script('ABCABBA'.chars, script)).to eq('CBABAC'.chars)
     end
+
+    it 'handles empty destination' do
+      script = Algorithms::Diff.naive_diff('ABCABBA'.chars, ''.chars)
+      expect(script_length(script)).to eq('ABCABBA'.length)
+      expect(apply_script('ABCABBA'.chars, script)).to eq(''.chars)
+    end
+
+    it 'handles empty source' do
+      script = Algorithms::Diff.naive_diff(''.chars, 'CBABAC'.chars)
+      expect(script_length(script)).to eq('CBABAC'.length)
+      expect(apply_script(''.chars, script)).to eq('CBABAC'.chars)
+    end
   end
 end
