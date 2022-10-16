@@ -9,3 +9,5 @@
 ## Hash Maps (Kotlin)
 
 ## Myers Diff Algorithm (Ruby)
+
+## HyperLogLog (Go)
