@@ -11,3 +11,7 @@
 ## Myers Diff Algorithm (Ruby)
 
 ## HyperLogLog (Go)
+
+## Fountain Codes (Go)
+
+Per [Damn Cool Algorithms](http://blog.notdot.net/2012/01/Damn-Cool-Algorithms-Fountain-Codes).
